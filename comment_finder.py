@@ -6,11 +6,9 @@ HEADERS = {"User-Agent": "Mozilla/5.0", "Accept": "application/json"}
 
 # Ključne riječi za tvoju knjigu
 REQUIRED_PHRASES = [
-    "virexon cycle",
+    "Virexon Cycle",
     "virexoncycle",
-    "dalen korvik",
-    "virexon",
-    "knjiga"
+    "Dalen Korvik",
 ]
 
 _session = requests.Session()
