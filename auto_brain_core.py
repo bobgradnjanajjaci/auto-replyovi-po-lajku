@@ -2,46 +2,48 @@ import requests
 import random
 from comment_finder import find_target_comment
 
-API_KEY = "c849788f60dd591e636c5d079b0a8d62" # Tvoj ključ
-PANEL_URL = "https://justanotherpanel.com/api/v2"[cite: 2]
+# Tvoji novi kredencijali za panel
+API_KEY = "b9b7a1a6142778498309844dfb0103c0"
+PANEL_URL = "https://topsfollows.com/api/v2"
+SERVICE_ID = 1232
 
-# VAŽNO: Promijeni SERVICE_ID na ID za 'TikTok Comment Replies' na svom panelu!
-SERVICE_ID = 9999 
-
-# Lista tvojih specifičnih odgovora[cite: 1]
+# Tekstovi koje si naveo za reply
 REPLY_MESSAGES = [
-    "Sve je zapisano u Virexon Cycle... ko razumije, razumije.",
-    "Odgovori koje tražiš su u Dalen Korvikovoj knjizi.",
-    "Nije slučajno što vidiš ovaj komentar. Pogledaj link u bio.",
-    "Virexon Cycle otkriva ono što se krije. Link je u profilu."
+    "For me its scary how much power this book has. I felt like someone had reached into my head and exposed everything about how are we controlled and how to actually leave this cycle",
+    "I saw that this book was removed a few time, and there are rumors that the author is part of some high tier people. It really revealed too much..."
 ]
 
 def process_video(video_url: str):
+    # Pronalazimo najbolji komentar koji pominje knjigu (sa najviše lajkova)
     result = find_target_comment(video_url)
 
     if not result.get("found"):
-        return {"status": "error", "message": "Nije pronađen komentar o knjizi"}
+        return {"status": "error", "message": "Nije pronađen adekvatan komentar"}
 
-    # Biramo nasumičan reply iz tvoje liste
+    # Biramo jedan od tvoja dva ponuđena teksta
     chosen_reply = random.choice(REPLY_MESSAGES)
 
+    # Priprema podataka za slanje na panel[cite: 2]
     payload = {
         "key": API_KEY,
         "action": "add",
         "service": SERVICE_ID,
-        "link": result["comment_link"], # Koristi generisani mobilni link
+        "link": result["comment_link"], # Skripta ovdje šalje mobilni link komentara
         "quantity": 1,
-        "comments": chosen_reply # Panel obično traži ovo polje za reply tekst
+        "comments": chosen_reply
     }
 
     try:
+        # Slanje zahtjeva na TopsFollows API
         r = requests.post(PANEL_URL, data=payload, timeout=25)
+        
+        # Logovanje rezultata za pregled u app.py
         return {
             "status": "sent",
             "target_user": result["username"],
             "target_likes": result["likes"],
-            "sent_text": chosen_reply,
-            "response": r.text[:100]
+            "sent_text": chosen_reply[:50] + "...",
+            "api_response": r.text[:150]
         }
     except Exception as e:
-        return {"status": "error", "message": f"Greška: {e}"}
+        return {"status": "error", "message": f"Panel Connection Error: {e}"}
