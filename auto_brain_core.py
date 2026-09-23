@@ -3,9 +3,9 @@ import random
 from comment_finder import find_target_comment
 
 # Tvoji novi kredencijali za panel
-API_KEY = "b9b7a1a6142778498309844dfb0103c0"
+API_KEY = "3dcd3f69b31e744d877388911388aa0b"
 PANEL_URL = "https://topsfollows.com/api/v2"
-SERVICE_ID = 1232
+SERVICE_ID = 3246
 
 # Tekstovi koje si naveo za reply
 REPLY_MESSAGES = [
