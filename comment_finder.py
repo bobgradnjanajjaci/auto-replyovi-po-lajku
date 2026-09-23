@@ -11,8 +11,8 @@ HEADERS = {
 
 # Sve varijacije iz tvog primera
 REQUIRED_PHRASES = [
-    "virexon cycle",
-    "dalen korvik",
+    "tervalun effect",
+    "mael vorran",
 ]
 
 _session = requests.Session()
